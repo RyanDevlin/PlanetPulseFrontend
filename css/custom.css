@@ -55,6 +55,10 @@
     margin-bottom: 2rem;
 }
 
+.small-text {
+    font-size: 0.75rem;
+}
+
 .social-link {
     width: 30px;
     height: 30px;
