@@ -1,9 +1,4 @@
 const ctx = document.getElementById('myChart');
-//const DATA_COUNT = 12;
-//const labels = [];
-//for (let i = 0; i < DATA_COUNT; ++i) {
-//  labels.push(i.toString());
-//}
 
 const CHART_COLORS = {
     red: 'rgb(255, 99, 132)',
@@ -12,7 +7,11 @@ const CHART_COLORS = {
     green: 'rgb(75, 192, 192)',
     blue: 'rgb(54, 162, 235)',
     purple: 'rgb(153, 102, 255)',
-    grey: 'rgb(201, 203, 207)'
+    grey: 'rgb(201, 203, 207)',
+    theme_red: 'rgb(200, 75, 49)',
+    theme_cream: 'rgb(236, 219, 186)',
+    theme_black: 'rgb(25, 25, 25)',
+    theme_yellow: 'rgb(238, 187, 77)',
 };
 
 const NAMED_COLORS = [
@@ -23,139 +22,230 @@ const NAMED_COLORS = [
     CHART_COLORS.blue,
     CHART_COLORS.purple,
     CHART_COLORS.grey,
+    CHART_COLORS.theme_red,
+    CHART_COLORS.theme_cream,
+    CHART_COLORS.theme_black,
+    CHART_COLORS.theme_yellow,
 ];
 
 const plugin = {
     id: 'custom_canvas_background_color',
     backgroundColor: "transparent",
-    //beforeDraw: (chart) => {
-    //const ctx = chart.canvas.getContext('2d');
-    //ctx.save();
-    //ctx.globalCompositeOperation = 'destination-over';
-    //ctx.fillStyle = 'lightGreen';
-    //ctx.fillRect(0, 0, chart.width, chart.height);
-    //ctx.restore();
-    //}
 };
 
-const datapoints2020 = [415.38, 416.92, 416.94, 419.28, 419.53, 419.47, NaN, NaN, NaN, NaN, NaN, NaN];
-const datapoints2021 = [413.6, 414.53, 414.09, 416.68, 417.06, 416.58, 415.47, 413.4, 411.6, 411.28, 411.99, 413.63];
-var months = luxon.Info.months('short')
-for (let i = 0; i < 12; i++) {
-  //months.push(moment().month(i+1).date(0).startOf('month'))
-  months.push(luxon.DateTime.DATETIME_SHORT.month())
+async function fetchAsync (url) {
+  fetch(url)
+      .then(response => {
+          if (!response.ok) {
+              if (response.status == 404) {
+                  return "HTTP error " + response.status
+              } else if (response.status == 400) {
+                  return response.json(); // The API server handles 400 requests gracefully
+              }
+              throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
+      })
+      .then(data => {
+          // ...use the data here...
+          let results = data["Results"];
+          var  datapoints = [];
+          for(var i = 0; i < results.length; i++) {
+            var obj = results[i];
+            //console.log(obj.Average);
+            datapoints.push(obj.Average)
+          }
+          return datapoints
+      })
+      .catch(error => {
+          // ...show/handle error here...
+          //drawChart(error.message)
+          console.log(error)
+      });
 }
 
-//console.log(moment.monthsShort())
-console.log(months)
+const months = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+];
 
-const data = {
-  labels: months,
-  datasets: [
-    {
-      label: '2020',
-      data: datapoints2020,
-      borderColor: CHART_COLORS.purple,
-      fill: false,
-      cubicInterpolationMode: 'monotone',
-      tension: 0.4
-    }, {
-      label: '2021',
-      data: datapoints2021,
-      borderColor: CHART_COLORS.red,
-      fill: false,
-      tension: 0.4
-    }
-  ]
-};
+function roundTo(n, digits) {
+  if (digits === undefined) {
+      digits = 0;
+  }
 
-const myChart = new Chart(ctx, {
-    type: 'line',
-    data: data,
-    options: {
-      responsive: true,
-      maintainAspectRatio: true,
-      plugins: {
-        title: {
-          display: true,
-          text: 'NOAA Atmospheric Data',
-          color: 'black',
-          font: {
-            size: 30,
-            family: "'Courier New', monospace",
-            weight: 'bold',
-          }
-        },
-        legend: {
-          labels: {
-            color: 'black',
-            font: {
-              size: 15,
-              family: "'Courier New', monospace",
-              weight: 'bold',
-            }
-          }
-        },
-      },
-      interaction: {
-        intersect: false,
-      },
-      scales: {
-        x: {
-          display: true,
-          title: {
-            display: true,
-            text: "Month",
-            color: 'black',
-            font: {
-              size: 20,
-              family: "'Courier New', monospace",
-              weight: 'bold',
-            }
-          },
-          type: 'time',
-          time: {
-            unit: 'month'
-          },
-          grid: {
-            color: 'black'
-          },
-          ticks: {
-            color: 'black',
-            font: {
-              size: 15,
-              family: "'Courier New', monospace",
-              weight: 'bold',
-            }
-          },
-        },
-        y: {
-          display: true,
-          title: {
-            display: true,
-            text: 'CO2 (PPM)',
-            color: 'black',
-            font: {
-              size: 20,
-              family: "'Courier New', monospace",
-              weight: 'bold',
-            }
-          },
-          grid: {
-            color: 'black'
-          },
-          ticks: {
-            color: 'black',
-            font: {
-              size: 15,
-              family: "'Courier New', monospace",
-              weight: 'bold',
-            }
-          },
-          suggestedMin: 410,
-          suggestedMax: 420
-        },
+  var multiplicator = Math.pow(10, digits);
+  n = parseFloat((n * multiplicator).toFixed(11));
+  return Math.round(n) / multiplicator;
+}
+
+const drawChart = async () => {
+  try {
+    var response = await fetch("https://planetpulse.io/v1/co2/?year=2021&limit=200")
+    var jsonData = await response.json()
+
+    var results = jsonData["Results"];
+    var  data2021 = [];
+    var month = 1;
+    var sum = 0;
+    var count = 0;
+    for(var i = 0; i < results.length; i++) {
+      var obj = results[i];
+      if (obj.Month == month) {
+        sum += obj.Average;
+        count += 1;
+      } else {
+        data2021.push(roundTo(sum/count,2))
+        month = obj.Month;
+        sum = 0;
+        count = 0;
       }
-    },
-    plugins: [plugin],
-  });
+    }
+    data2021.push(roundTo(sum/count,2))
+    
+    var response = await fetch("https://planetpulse.io/v1/co2?year=2020&limit=200")
+    var jsonData = await response.json()
+
+    var results = jsonData["Results"];
+    var  data2020 = [];
+    var month = 1;
+    var sum = 0;
+    var count = 0;
+    for(var i = 0; i < results.length; i++) {
+      var obj = results[i];
+      if (obj.Month == month) {
+        sum += obj.Average;
+        count += 1;
+      } else {
+        data2020.push(roundTo(sum/count,2))
+        month = obj.Month;
+        sum = 0;
+        count = 0;
+      }
+    }
+    data2020.push(roundTo(sum/count,2))
+    
+    var data = {
+      labels: months,
+      datasets: [
+        {
+          label: '2020',
+          data: data2020,
+          borderColor: CHART_COLORS.theme_yellow,
+          fill: false,
+          cubicInterpolationMode: 'monotone',
+          tension: 0.4
+        }, {
+          label: '2021',
+          data: data2021,
+          borderColor: CHART_COLORS.theme_red,
+          fill: false,
+          tension: 0.4
+        }
+      ]
+    };
+    console.log(data)
+
+    const myChart = new Chart(ctx, {
+      type: 'line',
+      data: data,
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          title: {
+            display: true,
+            text: 'NOAA Atmospheric Data',
+            color: CHART_COLORS.theme_cream,
+            font: {
+              size: 30,
+              family: "'Robato', monospace",
+              weight: 'bold',
+            }
+          },
+          legend: {
+            labels: {
+              color: CHART_COLORS.theme_cream,
+              font: {
+                size: 15,
+                family: "'Robato', monospace",
+                weight: 'bold',
+              }
+            }
+          },
+        },
+        interaction: {
+          intersect: false,
+        },
+        scales: {
+          x: {
+            display: true,
+            title: {
+              display: true,
+              text: "Month",
+              color: CHART_COLORS.theme_cream,
+              font: {
+                size: 20,
+                family: "'Robato', monospace",
+                weight: 'bold',
+              }
+            },
+            grid: {
+              color: 'theme_black'
+            },
+            ticks: {
+              color: CHART_COLORS.theme_cream,
+              font: {
+                size: 15,
+                family: "'Robato', monospace",
+                weight: 'bold',
+              }
+            },
+          },
+          y: {
+            display: true,
+            title: {
+              display: true,
+              text: 'CO2 (PPM)',
+              color: CHART_COLORS.theme_cream,
+              font: {
+                size: 20,
+                family: "'Robato', monospace",
+                weight: 'bold',
+              }
+            },
+            grid: {
+              color: 'theme_black'
+            },
+            ticks: {
+              color: CHART_COLORS.theme_cream,
+              font: {
+                size: 15,
+                family: "'Robato', monospace",
+                weight: 'bold',
+              }
+            },
+            suggestedMin: 410,
+            suggestedMax: 420
+          },
+        }
+      },
+      plugins: [plugin],
+    });
+
+  } catch (err) {
+     console.log(err)
+  }
+}
+
+drawChart();

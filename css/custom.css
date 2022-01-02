@@ -1,3 +1,202 @@
-.gradient-style {
+/*.gradient-style {
     background: linear-gradient(90deg, #0246ff85 0%, #00ff88 100%);
+}*/
+
+.pp_logo_main {
+    max-width: 100px;
+}
+
+.theme-white {
+    color: #ECDBBA;
+}
+
+.theme-blue {
+    color: #2D4263;
+}
+
+.noaa-chart {
+    min-height:250px;
+    max-height: 400px;
+}
+
+.generic-text {
+    color: #ECDBBA;
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1.5rem;
+    padding: 0.5rem;
+    padding-bottom: 1rem;
+}
+
+.paragraph-text {
+    color: #2D4263;
+    background: #ECDBBA;
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1.5rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 1.2rem;
+    border-radius: 15px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.contact-box {
+    color: #2D4263;
+    background: #ECDBBA;
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.social-link {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    border-radius: 50%;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+
+.social-link:hover,
+.social-link:focus {
+  background: #ddd;
+  text-decoration: none;
+  color: #555;
+}
+
+.github-photo {
+    padding: 2rem;
+    max-width: 200px;
+}
+
+.query-box {
+    color: #2D4263;
+    background: #ECDBBA;
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1.2rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 0.5rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.query-input {
+    color: #2D4263;
+    background: #ECDBBA;
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1.2rem;
+    width: 100%;
+    padding-left: 1%;
+    padding-right: 1%;
+    border: none;
+    background: transparent;
+    outline:none;
+
+}
+
+.api-response {
+    color: #f8f8f2; /*Foreground*/
+    background: #282a36; /*Background*/
+    font-weight: bold;
+    font-family: 'Robato', monospace;
+    font-size: 1rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 0.5rem;
+    border-radius: 15px;
+}
+
+pre {padding: 5px; margin: 5px; }
+.string { color: #8be9fd; /*Cyan*/}
+.number { color:  #50fa7b; /*Green*/  }
+.boolean { color: #8be9fd; /*Cyan*/ }
+.null { color: #ff79c6; /*Pink*/ }
+.key { color: #ffb86c; /*Orange*/ }
+  
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 24px;
+}
+
+.btn-1 {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+/* Created by http://grohit.com/  */
+.btn-1 a {
+    text-decoration: none;
+    border: 2px solid #ECDBBA;
+    padding: 15px;
+    color: #ECDBBA;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+}
+
+span {
+    position: relative;
+    /* z-index coz when we put bg to before and after this span text will not be visible */
+    z-index: 3;
+}
+
+/* Button 1 styles */
+
+.btn-1 a::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: -2px;
+    width: calc(100% + 6px);
+    /*100% plus double the times left values*/
+    height: calc(100% - 10px);
+    background-color: #2D4263;
+    transition: all 0.5s ease-in-out;
+    transform: scaleY(1);
+}
+
+.btn-1 a:hover::before {
+    transform: scaleY(0);
+}
+
+.btn-1 a::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: -5px;
+    width: calc(100% - 10px);
+    /*100% plus double the times left values*/
+    height: calc(100% + 10px);
+    background-color: #2D4263;
+    transition: all 0.5s ease-in-out;
+    transform: scaleX(1);
+}
+/* Created by http://grohit.com/  */
+
+.btn-1 a:hover::after {
+    transform: scaleX(0);
 }
