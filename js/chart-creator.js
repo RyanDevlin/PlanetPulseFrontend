@@ -52,14 +52,11 @@ async function fetchAsync (url) {
           var  datapoints = [];
           for(var i = 0; i < results.length; i++) {
             var obj = results[i];
-            //console.log(obj.Average);
             datapoints.push(obj.Average)
           }
           return datapoints
       })
       .catch(error => {
-          // ...show/handle error here...
-          //drawChart(error.message)
           console.log(error)
       });
 }
@@ -154,7 +151,6 @@ const drawChart = async () => {
         }
       ]
     };
-    console.log(data)
 
     const myChart = new Chart(ctx, {
       type: 'line',

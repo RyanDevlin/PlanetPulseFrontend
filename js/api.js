@@ -73,7 +73,6 @@ function validateUrl(url) {
 function ProcessInput() {
     url = document.getElementById("api-query").value;
     url = validateUrl(url);
-    console.log(url)
 
     fetchAsync(url);
 }
