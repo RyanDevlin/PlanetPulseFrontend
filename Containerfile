@@ -1,4 +1,4 @@
-FROM node:17.3 AS runtime
+FROM docker.io/library/node:17.3 AS runtime
 WORKDIR /opt/apifrontend
 COPY package.json package.json
 COPY package-lock.json package-lock.json

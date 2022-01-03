@@ -48,7 +48,7 @@ function fetchAsync (url) {
 }
 
 function validateUrl(url) {
-    defaultDomain = "planetpulse.io"
+    defaultDomain = "api.planetpulse.io"
     defaultResource = "/v1/co2"
     defaultQuery = "year=2021"
 

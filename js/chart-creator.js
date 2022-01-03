@@ -88,7 +88,7 @@ function roundTo(n, digits) {
 
 const drawChart = async () => {
   try {
-    var response = await fetch("https://planetpulse.io/v1/co2/?year=2021&limit=200")
+    var response = await fetch("https://api.planetpulse.io/v1/co2/?year=2021&limit=200")
     var jsonData = await response.json()
 
     var results = jsonData["Results"];
@@ -110,7 +110,7 @@ const drawChart = async () => {
     }
     data2021.push(roundTo(sum/count,2))
     
-    var response = await fetch("https://planetpulse.io/v1/co2?year=2020&limit=200")
+    var response = await fetch("https://api.planetpulse.io/v1/co2?year=2020&limit=200")
     var jsonData = await response.json()
 
     var results = jsonData["Results"];
