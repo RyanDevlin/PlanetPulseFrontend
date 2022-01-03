@@ -103,7 +103,9 @@ function setCursor(node,pos){
 
 function initializeApiPage() {
     node = document.getElementById("api-query");
-    setCursor(node,node.value.length);
+    if (!/Mobi|Android/i.test(navigator.userAgent)) {
+        setCursor(node,node.value.length);
+    }
     ProcessInput();
 }
 initializeApiPage();
