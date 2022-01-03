@@ -28,12 +28,25 @@
     padding-bottom: 1rem;
 }
 
-.paragraph-text {
+.contact-header {
     color: #2D4263;
     background: #ECDBBA;
     font-weight: bold;
     font-family: 'Robato', monospace;
     font-size: 1.5rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 1.2rem;
+    border-radius: 15px;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.paragraph-text {
+    color: #ECDBBA; /*Foreground*/
+    background: #282a36; /*Background*/
+    font-family: 'Robato', monospace;
+    font-size: 1rem;
     width: 80%;
     max-width: 800px;
     padding: 1.2rem;
